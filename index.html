@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Number Guessing Game</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            color: #2c3e50;
+        }
+
+        input[type=number] {
+            padding: 8px;
+            margin: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .buttons button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+            .buttons button:hover {
+                background-color: #45a049;
+            }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #d35400;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Number Guessing Game</h1>
+    <p>Set your range and think of a number within it.</p>
+    <input type="number" id="min" placeholder="Min (e.g., 1)" />
+    <input type="number" id="max" placeholder="Max (e.g., 100)" />
+    <button onclick="startGame()">Start Game</button>
+
+    <div id="game-area" style="display:none;">
+        <p id="guess-text">Is your number <span id="guess">?</span>?</p>
+        <p>Number of guesses: <span id="guess-count">0</span></p>
+
+        <div class="buttons">
+            <button onclick="tooLow()">Too Low</button>
+            <button onclick="correct()">Correct</button>
+            <button onclick="tooHigh()">Too High</button>
+        </div>
+
+        <button onclick="restartGame()">Restart</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        let low, high, guess, guessCount;
+
+        function startGame() {
+            low = parseInt(document.getElementById("min").value);
+            high = parseInt(document.getElementById("max").value);
+            if (isNaN(low) || isNaN(high) || low >= high) {
+                alert("Please enter a valid range where min < max.");
+                return;
+            }
+            guessCount = 0;
+            document.getElementById("game-area").style.display = "block";
+            document.getElementById("result").textContent = "";
+            updateGuess();
+        }
+
+        function updateGuess() {
+            guess = Math.floor((low + high) / 2);
+            guessCount++;
+            document.getElementById("guess").textContent = guess;
+            document.getElementById("guess-count").textContent = guessCount;
+        }
+
+        function tooLow() {
+            low = guess + 1;
+            checkGameOver();
+            updateGuess();
+        }
+
+        function tooHigh() {
+            high = guess - 1;
+            checkGameOver();
+            updateGuess();
+        }
+
+        function correct() {
+            document.getElementById("result").textContent =
+                "🎉 I guessed it! Your number is " + guess + " in " + guessCount + " guesses.";
+            disableButtons();
+        }
+
+        function checkGameOver() {
+            if (low > high) {
+                document.getElementById("result").textContent =
+                    "😵 Something went wrong! Did you change your number?";
+                disableButtons();
+            }
+        }
+
+        function disableButtons() {
+            const buttons = document.querySelectorAll(".buttons button");
+            buttons.forEach(button => button.disabled = true);
+        }
+
+        function restartGame() {
+            document.getElementById("game-area").style.display = "none";
+            document.getElementById("min").value = "";
+            document.getElementById("max").value = "";
+            const buttons = document.querySelectorAll(".buttons button");
+            buttons.forEach(button => button.disabled = false);
+        }
+    </script>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
